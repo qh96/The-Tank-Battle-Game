@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tank</title>
+	<style>
+	.field{width: 20px;height: 20px;position: absolute;top:0;left: 0;background-color: #000;}
+	.wall{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/walls.gif');
+		background-size: contain;}
+	.steel{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/steels.gif');
+		background-size: contain;}
+	.water{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/water.gif');
+		background-size: contain;}
+	.grass{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/grass.png');
+		background-size: contain;}
+
+	.p1tankL{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/p1tankL.gif'); }
+	.p1tankR{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/p1tankR.gif'); }
+	.p1tankU{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/p1tankU.gif'); background-size: contain;}
+	.p1tankD{width: 20px;height: 20px;position: absolute;background:url('img/p1tankD.gif');background-size: contain; }
+
+	.p2tankL{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/p2tankL.gif'); }
+	.p2tankR{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/p2tankR.gif'); }
+	.p2tankU{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/p2tankU.gif'); }
+	.p2tankD{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/p2tankD.gif'); }
+
+	.missle{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/tankmissile.gif');background-size: contain;}
+
+	.e1tankL{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy1L.gif'); background-size: contain;}
+	.e1tankR{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy1R.gif'); background-size: contain;}
+	.e1tankU{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy1U.gif'); background-size: contain;}
+	.e1tankD{width: 20px;height: 20px;position: absolute;background:url('img/enemy1D.gif'); background-size: contain;}
+
+	.e2tankL{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy2L.gif'); background-size: contain;}
+	.e2tankR{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy2R.gif'); background-size: contain;}
+	.e2tankU{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy2U.gif'); background-size: contain;}
+	.e2tankD{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy2D.gif'); background-size: contain;}
+
+	.e3tankL{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy3L.gif'); background-size: contain; }
+	.e3tankR{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy3R.gif'); background-size: contain;}
+	.e3tankU{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy3U.gif'); background-size: contain;}
+	.e3tankD{width: 20px;height: 20px;position: absolute;top:0;left: 0;background:url('img/enemy3D.gif'); background-size: contain;}
+	.blast{width: 20px;height: 20px;position: absolute;background:url('img/blast8.gif');background-size: contain;}
+	.star{width: 20px;height: 20px;position: absolute;top:380px;left: 380px;background:url('img/star.gif');background-size: contain;}
+
+	#down{width: 610px;height: 150px;position: absolute;background-color: #f0f0f0;left: 1px;top: 
+			405px;}
+	#right{width: 200px;height: 132px;position: absolute;left: 410px;top:0px;background-color: grey;}
+	#right p{font-size: 50px;text-align: center;color: green;}
+	#imgE1{width: 100px;height: 68px;position: absolute;left: 410px;top:200px;background-color: grey;text-align: center;}
+	#countE1{width: 100px;height: 68px;position: absolute;left: 510px;top:200px;background-color: grey;font-size: 50px;text-align: center;}
+	#imgE2{width: 100px;height: 68px;position: absolute;left: 410px;top:268px;background-color: grey;text-align: center;}
+	#countE2{width: 100px;height: 68px;position: absolute;left: 510px;top:268px;background-color: grey;font-size: 50px;text-align: center;}
+	#imgE3{width: 100px;height: 68px;position: absolute;left: 410px;top:336px;background-color: grey;text-align: center;}
+	#countE3{width: 100px;height: 68px;position: absolute;left: 510px;top:336px;background-color: grey;font-size: 50px;text-align: center;}
+	#countLife{width: 200px;height: 68px;position: absolute;left: 410px;top:132px;background-color: grey;font-size: 50px;text-align: center;color: green;}
+</style>
+</head>
+
+<body>
+	<div id="field"></div>
+	<div id="TankEnemy1"></div>
+	<div id="TankEnemy2"></div>
+	<div id="TankEnemy3"></div>
+	<div id="p1Tank"></div>
+	<div id="p2Tank"></div>
+	<div id="p1MissleUp"></div>
+	<div id="p1MissleDown"></div>
+	<div id="p1MissleLeft"></div>
+	<div id="p1MissleRight"></div>
+
+	<div id="e1MissleUp"></div>
+	<div id="e1MissleDown"></div>
+	<div id="e1MissleLeft"></div>
+	<div id="e1MissleRight"></div>
+
+	<div id="e2MissleUp"></div>
+	<div id="e2MissleDown"></div>
+	<div id="e2MissleLeft"></div>
+	<div id="e2MissleRight"></div>
+
+	<div id="e3MissleUp"></div>
+	<div id="e3MissleDown"></div>
+	<div id="e3MissleLeft"></div>
+	<div id="e3MissleRight"></div>
+	
+	<div id="star"></div>
+	<div id="steel"></div>
+	<div id="water"></div>
+	<div id="grass"></div>
+	<div id="wall"></div>
+
+	<div id="down">
+	<p>游戏名称：坦克大战</p>
+	<p>操作说明：W-上 ||  S-下 ||  A-左 ||  D-右 ||  J-发射炮弹</p>
+	<p>友情提示：“家”被端或右上角生命数为0则游戏结束</p>
+	<p>made by haoqin</p></div>
+	<div id="countLife">3</div>
+	<div id="right"><p>Life</p></div>
+	<div id="imgE1"><img src="img/enemy1U.gif" alt=""></div>
+	<div id="countE1">0</div>
+	<div id="imgE2"><img src="img/enemy2U.gif" alt=""></div>
+	<div id="countE2">0</div>
+	<div id="imgE3"><img src="img/enemy3U.gif" alt=""></div>
+	<div id="countE3">0</div>
+</body>
+</html>
+<script>
+	var over=false;
+	var direction="up";//玩家坦克（p1）方向，默认为上
+	var directionTankE1="up";//敌军坦克1的方向，E代表Enemy
+	var directionTankE2="up";
+	var directionTankE3="up";
+	
+	var timer;//下面的各种计时器，这里不做解释，会在函数中介绍
+	var timerStatus="off";
+
+	var timerE1;
+	var timerMoveE1;
+	var timerFireE1;
+	var timerStatusE1="off";
+
+	var timerE2;
+	var timerMoveE2;
+	var timerFireE2;
+	var timerStatusE2="off";
+
+	var timerE3;
+	var timerMoveE3;
+	var timerFireE3;
+	var timerStatusE3="off";
+  	
+	var tankSpeed=20;//坦克的速度
+	var missleSpeed=20;//导弹的速度
+
+	var countE1=0;//杀敌计数
+	var countE2=0;
+	var countE3=0;
+	var p1life=3;//生命计数
+	
+	function createField(css){//初始化地图的底图，全黑
+		var elm=document.createElement("div");
+		elm.className=css;
+		document.getElementById("field").appendChild(elm);
+		return elm;
+	}
+	function createTankEnemy(css){//初始化敌方坦克，U,D,L,R分别为上，下，左，右
+		switch(css){
+			case"e1tankD":
+				var elm=document.createElement("div");
+				elm.className=css;
+				document.getElementById("TankEnemy1").appendChild(elm);
+				return elm;
+			case"e2tankD":
+				var elm=document.createElement("div");
+				elm.className=css;
+				document.getElementById("TankEnemy2").appendChild(elm);
+				return elm;
+			case"e3tankD":
+				var elm=document.createElement("div");
+				elm.className=css;
+				document.getElementById("TankEnemy3").appendChild(elm);
+				return elm;
+			default:break;
+		}
+	}
+	function createP1Tank(css){//初始化玩家坦克
+		var elm=document.createElement("div");
+		elm.className=css;
+		document.getElementById("p1Tank").appendChild(elm);
+		return elm;
+	}
+	function createFire(css){//初始化导弹,有上下左右四个方向,p为player，e为enemy
+		switch(css){
+			case "p1MissleUp":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("p1MissleUp").appendChild(elm);
+				return elm;
+			case "p1MissleDown":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("p1MissleDown").appendChild(elm);
+				return elm;
+			case "p1MissleLeft":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("p1MissleLeft").appendChild(elm);
+				return elm;
+			case "p1MissleRight":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("p1MissleRight").appendChild(elm);
+				return elm;
+			case "e1MissleUp":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e1MissleUp").appendChild(elm);
+				return elm;
+			case "e1MissleDown":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e1MissleDown").appendChild(elm);
+				return elm;
+			case "e1MissleLeft":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e1MissleLeft").appendChild(elm);
+				return elm;
+			case "e1MissleRight":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e1MissleRight").appendChild(elm);
+				return elm;
+			case "e2MissleUp":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e2MissleUp").appendChild(elm);
+				return elm;
+			case "e2MissleDown":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e2MissleDown").appendChild(elm);
+				return elm;
+			case "e2MissleLeft":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e2MissleLeft").appendChild(elm);
+				return elm;
+			case "e2MissleRight":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e2MissleRight").appendChild(elm);
+				return elm;
+			case "e3MissleUp":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e3MissleUp").appendChild(elm);
+				return elm;
+			case "e3MissleDown":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e3MissleDown").appendChild(elm);
+				return elm;
+			case "e3MissleLeft":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e3MissleLeft").appendChild(elm);
+				return elm;
+			case "e3MissleRight":
+				var elm=document.createElement("div");
+				elm.className="missle";
+				document.getElementById("e3MissleRight").appendChild(elm);
+				return elm;
+			default:break;
+		}
+	}
+	function createEntity(css){//初始化各种实体
+		switch(css){
+			case"star"://玩家老巢
+				var elm=document.createElement("div");
+				elm.className="star";
+				document.getElementById("star").appendChild(elm);
+				return elm;
+			case"water"://水
+				var elm=document.createElement("div");
+				elm.className="water";
+				document.getElementById("water").appendChild(elm);
+				return elm;
+			case"steel"://钢
+				var elm=document.createElement("div");
+				elm.className="steel";
+				document.getElementById("steel").appendChild(elm);
+				return elm;
+			case"wall"://墙
+				var elm=document.createElement("div");
+				elm.className="wall";
+				document.getElementById("wall").appendChild(elm);
+				return elm;
+			case"grass"://草
+				var elm=document.createElement("div");
+				elm.className="grass";
+				document.getElementById("grass").appendChild(elm);
+				return elm;
+			default:break;
+		}
+	}
+	function Field(w,h){//地图类
+		this.width=w?w:20;
+		this.height=h?h:20;
+		this.divsteel=new Array();//所有的钢在一个数组，这里是初始化钢的函数，下同
+		this.divwater=new Array();
+		this.divgrass=new Array();
+		this.divwall=new Array();
+		this.showEntity=function(type,x,y){//显示实体
+			switch(type){
+				case"star":
+					var s=createEntity("star");
+					this.divstar=[s];
+					this.divstar[0].x=x;
+					this.divstar[0].y=y;
+					this.divstar[0].style.left=this.divstar[0].x+'px';
+					this.divstar[0].style.top=this.divstar[0].y+'px';
+					break;
+				case"steel":
+					var s=createEntity("steel");
+					this.divsteel.push(s);
+					this.divsteel[this.divsteel.length-1].x=x;
+					this.divsteel[this.divsteel.length-1].y=y;
+					for(var i in this.divsteel){
+						this.divsteel[i].style.left=this.divsteel[i].x+'px';
+						this.divsteel[i].style.top=this.divsteel[i].y+'px';
+					}break;
+				case"water":
+					 var w=createEntity("water");
+					this.divwater.push(w);
+					this.divwater[this.divwater.length-1].x=x;
+					this.divwater[this.divwater.length-1].y=y;
+					for(var i in this.divwater){
+						this.divwater[i].style.left=this.divwater[i].x+'px';
+						this.divwater[i].style.top=this.divwater[i].y+'px';
+					}break;
+				case"grass":
+					var g=createEntity("grass");
+					this.divgrass.push(g);
+					this.divgrass[this.divgrass.length-1].x=x;
+					this.divgrass[this.divgrass.length-1].y=y;
+					for(var i in this.divgrass){
+						this.divgrass[i].style.left=this.divgrass[i].x+'px';
+						this.divgrass[i].style.top=this.divgrass[i].y+'px';
+					}break;
+				case"wall":
+					var w=createEntity("wall");
+					this.divwall.push(w);
+					this.divwall[this.divwall.length-1].x=x;
+					this.divwall[this.divwall.length-1].y=y;
+					for(var i in this.divwall){
+						this.divwall[i].style.left=this.divwall[i].x+'px';
+						this.divwall[i].style.top=this.divwall[i].y+'px';
+					}break;
+				}
+		}
+		
+		
+		this.show=function(){
+			var f=createField("field");
+			f.style.width=this.width*20+'px';
+			f.style.height=this.height*20+'px';
+		}
+		this.checkborder=function(x,y,direc){//判断边界，有四个方向，Y为yes
+			switch(direc){
+				case"up":
+					if(y>=20)return 'Y';
+					else return 'N';
+				case"down":
+					if(y<=360)return 'Y';
+					else return 'N';
+				case"left":
+					if(x>=20)return 'Y';
+					else return 'N';
+				case"right":
+					if(x<=360)return 'Y';
+					else return 'N';
+				default:break;
+			}
+		}
+		this.checkEntity=function(x,y,type){//检查是否接触了实体（障碍），包括坦克的接触和子弹的接触
+			switch(type){
+				case"Steel":
+					for(var i in this.divsteel){
+					if(x==this.divsteel[i].x&&y==this.divsteel[i].y)return 'N';
+					}
+					return 'Y';
+				case"Water":
+					for(var i in this.divwater){
+					if(x==this.divwater[i].x&&y==this.divwater[i].y)return 'N';
+					}
+					return 'Y';
+				case"WallMove"://坦克移动触墙
+					for(var i in this.divwall){
+					if(x==this.divwall[i].x&&y==this.divwall[i].y)return 'N';
+					}
+					return 'Y';
+				case"WallMissle"://导弹移动触墙
+					for(var i in this.divwall){
+					if(x==this.divwall[i].x&&y==this.divwall[i].y)
+					return 'Y';
+					}
+					return 'N';
+			}
+		}
+		this.removeWall=function(x,y){//子弹把墙搞掉
+			for(var i in this.divwall){
+				if(x==this.divwall[i].x&&y==this.divwall[i].y){
+					this.divwall.splice(i,1);
+					document.getElementById("wall").removeChild(document.getElementById("wall").childNodes[i]);
+					return;
+				}
+			}
+		}
+	}
+	function TankEnemy1(){//第一个敌军坦克类，下同
+		this.reset=function(startx,starty){//被玩家搞掉之后会重置回起点（reset）
+			var divTankEnemy1=createTankEnemy("e1tankD");
+			this.divs_e1=[divTankEnemy1];
+			this.divs_e1[0].x=startx;
+			this.divs_e1[0].y=starty;
+		}
+		this.show=function(){
+			this.divs_e1[0].style.left=this.divs_e1[0].x+'px';
+			this.divs_e1[0].style.top=this.divs_e1[0].y+'px';
+		}
+		this.move=function(direc){//坦克移动
+			switch(direc){
+				case"up"://上方向，下同
+					var enemy1X=this.divs_e1[0].x;//Enemy1实时坐标
+					var enemy1Y=this.divs_e1[0].y;
+					if(this.field.checkborder(enemy1X,enemy1Y,"up")=='Y'&&this.field.checkEntity(enemy1X,enemy1Y-tankSpeed,"Steel")=='Y'&&this.field.checkEntity(enemy1X,enemy1Y-tankSpeed,"Water")=='Y'&&this.field.checkEntity(enemy1X,enemy1Y-tankSpeed,"WallMove")=='Y'){//各种接触检测
+						directionTankE1="up";//坦克朝向为上
+						this.divs_e1[0].style.backgroundImage="url(img/enemy1U.gif)";//图为上朝向坦克
+						this.divs_e1[0].y-=tankSpeed;//向上移动
+						this.show();
+					}else{
+					clearInterval(timerMoveE1);//清除计时器，坦克停止移动（坦克每0.5秒移动20px）
+					timerMoveE1=window.setInterval("if(!over)te.move('left')",500);//触边左转
+					}break;
+				case"down":
+					var enemy1X=this.divs_e1[0].x;//Enemy1实时坐标
+					var enemy1Y=this.divs_e1[0].y;
+					if(this.field.checkborder(enemy1X,enemy1Y,"down")=='Y'&&this.field.checkEntity(enemy1X,enemy1Y+tankSpeed,"Steel")=='Y'&&this.field.checkEntity(enemy1X,enemy1Y+tankSpeed,"Water")=='Y'&&this.field.checkEntity(enemy1X,enemy1Y+tankSpeed,"WallMove")=='Y'){
+						directionTankE1="down";
+						this.divs_e1[0].style.backgroundImage="url(img/enemy1D.gif)";
+						this.divs_e1[0].y+=tankSpeed;
+						this.show();
+					}else{
+						clearInterval(timerMoveE1);
+						timerMoveE1=window.setInterval("if(!over)te.move('right')",500);
+					}break;
+				case"left":
+					var enemy1X=this.divs_e1[0].x;//Enemy1实时坐标
+					var enemy1Y=this.divs_e1[0].y;
+					if(this.field.checkborder(enemy1X,enemy1Y,"left")=='Y'&&this.field.checkEntity(enemy1X-tankSpeed,enemy1Y,"Steel")=='Y'&&this.field.checkEntity(enemy1X-tankSpeed,enemy1Y,"Water")=='Y'&&this.field.checkEntity(enemy1X-tankSpeed,enemy1Y,"WallMove")=='Y'){
+						directionTankE1="left";
+						this.divs_e1[0].style.backgroundImage="url(img/enemy1L.gif)";
+						this.divs_e1[0].x-=tankSpeed;
+						this.show();
+					}else{
+						clearInterval(timerMoveE1);
+						timerMoveE1=window.setInterval("if(!over)te.move('down')",500);
+					}break;
+				case"right":
+					var enemy1X=this.divs_e1[0].x;//Enemy1实时坐标
+					var enemy1Y=this.divs_e1[0].y;
+					if(this.field.checkborder(enemy1X,enemy1Y,"right")=='Y'&&this.field.checkEntity(enemy1X+tankSpeed,enemy1Y,"Steel")=='Y'&&this.field.checkEntity(enemy1X+tankSpeed,enemy1Y,"Water")=='Y'&&this.field.checkEntity(enemy1X+tankSpeed,enemy1Y,"WallMove")=='Y'){
+						directionTankE1="right";
+						this.divs_e1[0].style.backgroundImage="url(img/enemy1R.gif)";
+						this.divs_e1[0].x+=tankSpeed;
+						this.show();
+					}else{
+						clearInterval(timerMoveE1);
+						timerMoveE1=window.setInterval("if(!over)te.move('up')",500);
+					}	
+			}
+		}
+		this.checkhitE1=function(direc){//敌军坦克是否攻击到了玩家坦克检测
+			this.hitP1=function(){//玩家坦克被攻击
+				document.getElementById("p1Tank").removeChild(document.getElementById("p1Tank").lastChild);//消除玩家坦克
+				t.reset(160,380);//重置回出发点
+				t.show();
+				p1life--;//生命值减一
+				if(p1life>0){document.getElementById("countLife").innerHTML=p1life;}
+				else {document.getElementById("countLife").innerHTML="Over";over=true;}
+			}
+			this.hitStar=function(){//玩家老巢被攻击
+				over=true;//一击致命
+				this.field.divstar[0].style.backgroundImage="url(img/blast8.gif)";
+			}
+			switch(direc){
+				case"up"://导弹上方向
+					if(this.field.divstar[0].x==this.divsMissleUpE1[0].x&&this.field.divstar[0].y==this.divsMissleUpE1[0].y)//要是上行导弹坐标和老巢一样，说明老巢被打
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleUpE1[0].x&&this.hit.divs[0].y==this.divsMissleUpE1[0].y){//同理，玩家坦克被打
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+				case"down":
+					if(this.field.divstar[0].x==this.divsMissleDownE1[0].x&&this.field.divstar[0].y==this.divsMissleDownE1[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleDownE1[0].x&&this.hit.divs[0].y==this.divsMissleDownE1[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+				case"left":
+					if(this.field.divstar[0].x==this.divsMissleLeftE1[0].x&&this.field.divstar[0].y==this.divsMissleLeftE1[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleLeftE1[0].x&&this.hit.divs[0].y==this.divsMissleLeftE1[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+				case"right":
+					if(this.field.divstar[0].x==this.divsMissleRightE1[0].x&&this.field.divstar[0].y==this.divsMissleRightE1[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleRightE1[0].x&&this.hit.divs[0].y==this.divsMissleRightE1[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+			}
+		}
+		this.firemove=function(startx,starty){//导弹运动
+			this.fireshow=function(direc){//导弹运动展示
+				switch(direc){
+					case"up":
+						this.divsMissleUpE1[0].style.left=this.divsMissleUpE1[0].x+'px';
+						this.divsMissleUpE1[0].style.top=this.divsMissleUpE1[0].y+'px';
+						break;
+					case"down":
+						this.divsMissleDownE1[0].style.left=this.divsMissleDownE1[0].x+'px';
+						this.divsMissleDownE1[0].style.top=this.divsMissleDownE1[0].y+'px';
+						break;
+					case"left":
+						this.divsMissleLeftE1[0].style.left=this.divsMissleLeftE1[0].x+'px';
+						this.divsMissleLeftE1[0].style.top=this.divsMissleLeftE1[0].y+'px';
+						break;
+					case"right":
+						this.divsMissleRightE1[0].style.left=this.divsMissleRightE1[0].x+'px';
+						this.divsMissleRightE1[0].style.top=this.divsMissleRightE1[0].y+'px';
+						break;
+				}
+			}
+			this.fireStop=function(direc){//导弹停止运动，并且消失，导弹运动计时器clear
+				switch(direc){
+					case"up":
+						clearInterval(timerE1);
+						document.getElementById("e1MissleUp").removeChild(document.getElementById("e1MissleUp").lastChild);
+						timerStatusE1="off";
+						break;
+					case"down":
+						clearInterval(timerE1);
+						document.getElementById("e1MissleDown").removeChild(document.getElementById("e1MissleDown").lastChild);
+						timerStatusE1="off";
+						break;
+					case"left":
+						clearInterval(timerE1);
+						document.getElementById("e1MissleLeft").removeChild(document.getElementById("e1MissleLeft").lastChild);
+						timerStatusE1="off";
+						break;
+					case"right":
+						clearInterval(timerE1);
+						document.getElementById("e1MissleRight").removeChild(document.getElementById("e1MissleRight").lastChild);
+						timerStatusE1="off";
+						break;
+				}
+			}
+			this.fireLocate=function(direc){//导弹被初始化而且有了坐标
+				switch(direc){
+					case"up":
+						var divfire=createFire("e1MissleUp");
+						this.divsMissleUpE1=[divfire];
+						this.divsMissleUpE1[0].x=this.divs_e1[0].x;
+						this.divsMissleUpE1[0].y=this.divs_e1[0].y;
+						break;
+					case"down":
+						var divfire=createFire("e1MissleDown");
+						this.divsMissleDownE1=[divfire];
+						this.divsMissleDownE1[0].x=this.divs_e1[0].x;
+						this.divsMissleDownE1[0].y=this.divs_e1[0].y;
+						break;
+					case"left":
+						var divfire=createFire("e1MissleLeft");
+						this.divsMissleLeftE1=[divfire];
+						this.divsMissleLeftE1[0].x=this.divs_e1[0].x;
+						this.divsMissleLeftE1[0].y=this.divs_e1[0].y;
+						break;
+					case"right":
+						var divfire=createFire("e1MissleRight");
+						this.divsMissleRightE1=[divfire];
+						this.divsMissleRightE1[0].x=this.divs_e1[0].x;
+						this.divsMissleRightE1[0].y=this.divs_e1[0].y;
+						break;
+				}
+			}
+			switch(directionTankE1){//检测到现在坦克的运行方向，根据这个方向发射导弹
+				case "up":
+					this.fireup=function(){
+						if(document.getElementById("e1MissleUp").children.length<=0){
+							this.fireLocate("up");
+						}
+						if(this.field.checkborder(this.divsMissleUpE1[0].x,this.divsMissleUpE1[0].y,"up")=='Y'&&this.field.checkEntity(this.divsMissleUpE1[0].x,this.divsMissleUpE1[0].y,"Steel")=='Y'){//各种接触检测,如果满足，导弹继续运行
+							this.divsMissleUpE1[0].y-=missleSpeed;
+							timerStatusE1="open";//open时候无法再次发射，确保此颗到达边界后，才能发射另一颗
+							if(this.field.checkEntity(this.divsMissleUpE1[0].x,this.divsMissleUpE1[0].y,"WallMissle")=='Y'){//如果搞掉了墙，就remove这块墙
+								this.fireStop("up");
+								this.field.removeWall(this.divsMissleUpE1[0].x,this.divsMissleUpE1[0].y);
+							}
+							if(this.checkhitE1("up")=='Y')//如果搞掉了玩家坦克，导弹停止
+								this.fireStop("up");
+							}
+						else
+							this.fireStop("up");
+					}
+					if(timerStatusE1=="off")//off时刻，可以继续发射
+						timerE1=window.setInterval("if(!over)te.fireup();te.fireshow('up');",100);
+					break;
+				case "down":
+					this.firedown=function(){
+						if(document.getElementById("e1MissleDown").children.length<=0){
+							this.fireLocate("down");
+						}	
+						if(this.field.checkborder(this.divsMissleDownE1[0].x,this.divsMissleDownE1[0].y,"down")=='Y'&&this.field.checkEntity(this.divsMissleDownE1[0].x,this.divsMissleDownE1[0].y,"Steel")=='Y'){
+							MissleDownE1Y=this.divsMissleDownE1[0].y+=missleSpeed;
+							timerStatusE1="open";
+							if(this.field.checkEntity(this.divsMissleDownE1[0].x,this.divsMissleDownE1[0].y,"WallMissle")=='Y'){
+								this.fireStop("down");
+								this.field.removeWall(this.divsMissleDownE1[0].x,this.divsMissleDownE1[0].y);
+							}
+							if(this.checkhitE1("down")=='Y')
+								this.fireStop("down");
+							}
+						else
+							this.fireStop("down");
+					}
+					if(timerStatusE1=="off")
+						timerE1=window.setInterval("if(!over)te.firedown();te.fireshow('down');",100);
+					break;
+				case "left":
+					this.fireleft=function(){
+						if(document.getElementById("e1MissleLeft").children.length<=0){
+							this.fireLocate("left");
+						}	
+						if(this.field.checkborder(this.divsMissleLeftE1[0].x,this.divsMissleLeftE1[0].y,"left")=='Y'&&this.field.checkEntity(this.divsMissleLeftE1[0].x,this.divsMissleLeftE1[0].y,"Steel")=='Y'){
+							this.divsMissleLeftE1[0].x-=missleSpeed;
+							timerStatusE1="open";
+							if(this.field.checkEntity(this.divsMissleLeftE1[0].x,this.divsMissleLeftE1[0].y,"WallMissle")=='Y'){
+								this.fireStop("left");
+								this.field.removeWall(this.divsMissleLeftE1[0].x,this.divsMissleLeftE1[0].y);
+							}
+							if(this.checkhitE1("left")=='Y')
+								this.fireStop("left");
+							
+							}
+						else
+							this.fireStop("left");
+					}
+					if(timerStatusE1=="off")
+						timerE1=window.setInterval("if(!over)te.fireleft();te.fireshow('left');",100);
+					break;
+				case "right":
+						this.fireright=function(){
+						if(document.getElementById("e1MissleRight").children.length<=0){
+							this.fireLocate("right");
+						}	
+						if(this.field.checkborder(this.divsMissleRightE1[0].x,this.divsMissleRightE1[0].y,"right")=='Y'&&this.field.checkEntity(this.divsMissleRightE1[0].x,this.divsMissleRightE1[0].y,"Steel")=='Y'){
+							this.divsMissleRightE1[0].x+=missleSpeed;
+							timerStatusE1="open";
+							if(this.field.checkEntity(this.divsMissleRightE1[0].x,this.divsMissleRightE1[0].y,"WallMissle")=='Y'){
+								this.fireStop("right");
+								this.field.removeWall(this.divsMissleRightE1[0].x,this.divsMissleRightE1[0].y);
+							}
+							if(this.checkhitE1("right")=='Y')
+								this.fireStop("right");
+							}
+						else
+							this.fireStop("right");
+					}
+					if(timerStatusE1=="off")
+						timerE1=window.setInterval("if(!over)te.fireright();te.fireshow('right');",100);
+					break;
+				}
+			}
+		
+	}
+	function TankEnemy2(){
+		this.reset=function(startx,starty){
+			var divTankEnemy2=createTankEnemy("e2tankD");
+			this.divs_e2=[divTankEnemy2];
+			this.divs_e2[0].x=startx;
+			this.divs_e2[0].y=starty;
+		}
+		this.show=function(){
+			this.divs_e2[0].style.left=this.divs_e2[0].x+'px';
+			this.divs_e2[0].style.top=this.divs_e2[0].y+'px';
+		}
+		this.move=function(direc){
+			switch(direc){
+				case"up":
+					var enemy2X=this.divs_e2[0].x;//Enemy2实时坐标
+					var enemy2Y=this.divs_e2[0].y;
+					if(this.field.checkborder(enemy2X,enemy2Y,"up")=='Y'&&this.field.checkEntity(enemy2X,enemy2Y-tankSpeed,"Steel")=='Y'&&this.field.checkEntity(enemy2X,enemy2Y-tankSpeed,"Water")=='Y'&&this.field.checkEntity(enemy2X,enemy2Y-tankSpeed,"WallMove")=='Y'){
+						directionTankE2="up";
+						this.divs_e2[0].style.backgroundImage="url(img/enemy2U.gif)";
+						this.divs_e2[0].y-=tankSpeed;
+						this.show();
+					}else{
+					clearInterval(timerMoveE2);
+					timerMoveE2=window.setInterval("if(!over)te2.move('left')",500);
+					}break;
+				case"down":
+					var enemy2X=this.divs_e2[0].x;//Enemy2实时坐标
+					var enemy2Y=this.divs_e2[0].y;
+					if(this.field.checkborder(enemy2X,enemy2Y,"down")=='Y'&&this.field.checkEntity(enemy2X,enemy2Y+tankSpeed,"Steel")=='Y'&&this.field.checkEntity(enemy2X,enemy2Y+tankSpeed,"Water")=='Y'&&this.field.checkEntity(enemy2X,enemy2Y+tankSpeed,"WallMove")=='Y'){
+						directionTankE2="down";
+						this.divs_e2[0].style.backgroundImage="url(img/enemy2D.gif)";
+						this.divs_e2[0].y+=tankSpeed;
+						this.show();
+					}else{
+						clearInterval(timerMoveE2);
+						timerMoveE2=window.setInterval("if(!over)te2.move('right')",500);
+					}break;
+				case"left":
+					var enemy2X=this.divs_e2[0].x;//Enemy2实时坐标
+					var enemy2Y=this.divs_e2[0].y;
+					if(this.field.checkborder(enemy2X,enemy2Y,"left")=='Y'&&this.field.checkEntity(enemy2X-tankSpeed,enemy2Y,"Steel")=='Y'&&this.field.checkEntity(enemy2X-tankSpeed,enemy2Y,"Water")=='Y'&&this.field.checkEntity(enemy2X-tankSpeed,enemy2Y,"WallMove")=='Y'){
+						directionTankE2="left";
+						this.divs_e2[0].style.backgroundImage="url(img/enemy2L.gif)";
+						this.divs_e2[0].x-=tankSpeed;
+						this.show();
+					}else{
+						clearInterval(timerMoveE2);
+						timerMoveE2=window.setInterval("if(!over)te2.move('down')",500);
+					}break;
+				case"right":
+					var enemy2X=this.divs_e2[0].x;//Enemy2实时坐标
+					var enemy2Y=this.divs_e2[0].y;
+					if(this.field.checkborder(enemy2X,enemy2Y,"right")=='Y'&&this.field.checkEntity(enemy2X+tankSpeed,enemy2Y,"Steel")=='Y'&&this.field.checkEntity(enemy2X+tankSpeed,enemy2Y,"Water")=='Y'&&this.field.checkEntity(enemy2X+tankSpeed,enemy2Y,"WallMove")=='Y'){
+						directionTankE2="right";
+						this.divs_e2[0].style.backgroundImage="url(img/enemy2R.gif)";
+						this.divs_e2[0].x+=tankSpeed;
+						this.show();
+					}else{
+						clearInterval(timerMoveE2);
+						timerMoveE2=window.setInterval("if(!over)te2.move('up')",500);
+					}	
+			}
+		}
+
+		this.checkhitE2=function(direc){
+			this.hitP1=function(){
+				document.getElementById("p1Tank").removeChild(document.getElementById("p1Tank").lastChild);
+				t.reset(160,380);
+				t.show();
+				p1life--;
+				if(p1life>0){document.getElementById("countLife").innerHTML=p1life;}
+				else {document.getElementById("countLife").innerHTML="Over";over=true;}
+			}
+			this.hitStar=function(){
+				over=true;
+				this.field.divstar[0].style.backgroundImage="url(img/blast8.gif)";
+			}
+			switch(direc){
+				case"up":
+					if(this.field.divstar[0].x==this.divsMissleUpE2[0].x&&this.field.divstar[0].y==this.divsMissleUpE2[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleUpE2[0].x&&this.hit.divs[0].y==this.divsMissleUpE2[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+				case"down":
+					if(this.field.divstar[0].x==this.divsMissleDownE2[0].x&&this.field.divstar[0].y==this.divsMissleDownE2[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleDownE2[0].x&&this.hit.divs[0].y==this.divsMissleDownE2[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+				case"left":
+					if(this.field.divstar[0].x==this.divsMissleLeftE2[0].x&&this.field.divstar[0].y==this.divsMissleLeftE2[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleLeftE2[0].x&&this.hit.divs[0].y==this.divsMissleLeftE2[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+				case"right":
+					if(this.field.divstar[0].x==this.divsMissleRightE2[0].x&&this.field.divstar[0].y==this.divsMissleRightE2[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleRightE2[0].x&&this.hit.divs[0].y==this.divsMissleRightE2[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+			}
+		}
+		this.firemove=function(startx,starty){
+			this.fireshow=function(direc){
+				switch(direc){
+					case"up":
+						this.divsMissleUpE2[0].style.left=this.divsMissleUpE2[0].x+'px';
+						this.divsMissleUpE2[0].style.top=this.divsMissleUpE2[0].y+'px';
+						break;
+					case"down":
+						this.divsMissleDownE2[0].style.left=this.divsMissleDownE2[0].x+'px';
+						this.divsMissleDownE2[0].style.top=this.divsMissleDownE2[0].y+'px';
+						break;
+					case"left":
+						this.divsMissleLeftE2[0].style.left=this.divsMissleLeftE2[0].x+'px';
+						this.divsMissleLeftE2[0].style.top=this.divsMissleLeftE2[0].y+'px';
+						break;
+					case"right":
+						this.divsMissleRightE2[0].style.left=this.divsMissleRightE2[0].x+'px';
+						this.divsMissleRightE2[0].style.top=this.divsMissleRightE2[0].y+'px';
+						break;
+				}
+			}
+			this.fireStop=function(direc){
+				switch(direc){
+					case"up":
+						clearInterval(timerE2);
+						document.getElementById("e2MissleUp").removeChild(document.getElementById("e2MissleUp").lastChild);
+						timerStatusE2="off";
+						break;
+					case"down":
+						clearInterval(timerE2);
+						document.getElementById("e2MissleDown").removeChild(document.getElementById("e2MissleDown").lastChild);
+						timerStatusE2="off";
+						break;
+					case"left":
+						clearInterval(timerE2);
+						document.getElementById("e2MissleLeft").removeChild(document.getElementById("e2MissleLeft").lastChild);
+						timerStatusE2="off";
+						break;
+					case"right":
+						clearInterval(timerE2);
+						document.getElementById("e2MissleRight").removeChild(document.getElementById("e2MissleRight").lastChild);
+						timerStatusE2="off";
+						break;
+				}
+			}
+			this.fireLocate=function(direc){
+				switch(direc){
+					case"up":
+						var divfire=createFire("e2MissleUp");
+						this.divsMissleUpE2=[divfire];
+						this.divsMissleUpE2[0].x=this.divs_e2[0].x;
+						this.divsMissleUpE2[0].y=this.divs_e2[0].y;
+						break;
+					case"down":
+						var divfire=createFire("e2MissleDown");
+						this.divsMissleDownE2=[divfire];
+						this.divsMissleDownE2[0].x=this.divs_e2[0].x;
+						this.divsMissleDownE2[0].y=this.divs_e2[0].y;
+						break;
+					case"left":
+						var divfire=createFire("e2MissleLeft");
+						this.divsMissleLeftE2=[divfire];
+						this.divsMissleLeftE2[0].x=this.divs_e2[0].x;
+						this.divsMissleLeftE2[0].y=this.divs_e2[0].y;
+						break;
+					case"right":
+						var divfire=createFire("e2MissleRight");
+						this.divsMissleRightE2=[divfire];
+						this.divsMissleRightE2[0].x=this.divs_e2[0].x;
+						this.divsMissleRightE2[0].y=this.divs_e2[0].y;
+						break;
+				}
+			}
+			switch(directionTankE2){
+				case "up":
+					this.fireup=function(){
+						if(document.getElementById("e2MissleUp").children.length<=0){
+							this.fireLocate("up");
+						}
+						if(this.field.checkborder(this.divsMissleUpE2[0].x,this.divsMissleUpE2[0].y,"up")=='Y'&&this.field.checkEntity(this.divsMissleUpE2[0].x,this.divsMissleUpE2[0].y,"Steel")=='Y'){
+							this.divsMissleUpE2[0].y-=missleSpeed;
+							timerStatusE2="open";
+							if(this.field.checkEntity(this.divsMissleUpE2[0].x,this.divsMissleUpE2[0].y,"WallMissle")=='Y'){
+								this.fireStop("up");
+								this.field.removeWall(this.divsMissleUpE2[0].x,this.divsMissleUpE2[0].y);
+							}
+							if(this.checkhitE2("up")=='Y')
+								this.fireStop("up");
+							}
+						else
+							this.fireStop("up");
+					}
+					if(timerStatusE2=="off")
+						timerE2=window.setInterval("if(!over)te2.fireup();te2.fireshow('up');",100);
+					break;
+				case "down":
+					this.firedown=function(){
+						if(document.getElementById("e2MissleDown").children.length<=0){
+							this.fireLocate("down");
+						}	
+						if(this.field.checkborder(this.divsMissleDownE2[0].x,this.divsMissleDownE2[0].y,"down")=='Y'&&this.field.checkEntity(this.divsMissleDownE2[0].x,this.divsMissleDownE2[0].y,"Steel")=='Y'){
+							MissleDownE2Y=this.divsMissleDownE2[0].y+=missleSpeed;
+							timerStatusE2="open";
+							if(this.field.checkEntity(this.divsMissleDownE2[0].x,this.divsMissleDownE2[0].y,"WallMissle")=='Y'){
+								this.fireStop("down");
+								this.field.removeWall(this.divsMissleDownE2[0].x,this.divsMissleDownE2[0].y);
+							}
+							if(this.checkhitE2("down")=='Y')
+								this.fireStop("down");
+							}
+						else
+							this.fireStop("down");
+					}
+					if(timerStatusE2=="off")
+						timerE2=window.setInterval("if(!over)te2.firedown();te2.fireshow('down');",100);
+					break;
+				case "left":
+					this.fireleft=function(){
+						if(document.getElementById("e2MissleLeft").children.length<=0){
+							this.fireLocate("left");
+						}	
+						if(this.field.checkborder(this.divsMissleLeftE2[0].x,this.divsMissleLeftE2[0].y,"left")=='Y'&&this.field.checkEntity(this.divsMissleLeftE2[0].x,this.divsMissleLeftE2[0].y,"Steel")=='Y'){
+							this.divsMissleLeftE2[0].x-=missleSpeed;
+							timerStatusE2="open";
+							if(this.field.checkEntity(this.divsMissleLeftE2[0].x,this.divsMissleLeftE2[0].y,"WallMissle")=='Y'){
+								this.fireStop("left");
+								this.field.removeWall(this.divsMissleLeftE2[0].x,this.divsMissleLeftE2[0].y);
+							}
+							if(this.checkhitE2("left")=='Y')
+								this.fireStop("left");
+							
+							}
+						else
+							this.fireStop("left");
+					}
+					if(timerStatusE2=="off")
+						timerE2=window.setInterval("if(!over)te2.fireleft();te2.fireshow('left');",100);
+					break;
+				case "right":
+						this.fireright=function(){
+						if(document.getElementById("e2MissleRight").children.length<=0){
+							this.fireLocate("right");
+						}	
+						if(this.field.checkborder(this.divsMissleRightE2[0].x,this.divsMissleRightE2[0].y,"right")=='Y'&&this.field.checkEntity(this.divsMissleRightE2[0].x,this.divsMissleRightE2[0].y,"Steel")=='Y'){
+							this.divsMissleRightE2[0].x+=missleSpeed;
+							timerStatusE2="open";
+							if(this.field.checkEntity(this.divsMissleRightE2[0].x,this.divsMissleRightE2[0].y,"WallMissle")=='Y'){
+								this.fireStop("right");
+								this.field.removeWall(this.divsMissleRightE2[0].x,this.divsMissleRightE2[0].y);
+							}
+							if(this.checkhitE2("right")=='Y')
+								this.fireStop("right");
+							}
+						else
+							this.fireStop("right");
+					}
+					if(timerStatusE2=="off")
+						timerE2=window.setInterval("if(!over)te2.fireright();te2.fireshow('right');",100);
+					break;
+				}
+			}
+		
+	}
+	function TankEnemy3(){
+		this.reset=function(startx,starty){
+			var divTankEnemy3=createTankEnemy("e3tankD");
+			this.divs_e3=[divTankEnemy3];
+			this.divs_e3[0].x=startx;
+			this.divs_e3[0].y=starty;
+		}
+		this.show=function(){
+			this.divs_e3[0].style.left=this.divs_e3[0].x+'px';
+			this.divs_e3[0].style.top=this.divs_e3[0].y+'px';
+		}
+		this.move=function(direc){
+			switch(direc){
+				case"up":
+					var enemy3X=this.divs_e3[0].x;//Enemy3实时坐标
+					var enemy3Y=this.divs_e3[0].y;
+					if(this.field.checkborder(enemy3X,enemy3Y,"up")=='Y'&&this.field.checkEntity(enemy3X,enemy3Y-tankSpeed,"Steel")=='Y'&&this.field.checkEntity(enemy3X,enemy3Y-tankSpeed,"Water")=='Y'&&this.field.checkEntity(enemy3X,enemy3Y-tankSpeed,"WallMove")=='Y'){
+						directionTankE3="up";
+						this.divs_e3[0].style.backgroundImage="url(img/enemy3U.gif)";
+						this.divs_e3[0].y-=tankSpeed;
+						this.show();
+					}else{
+					clearInterval(timerMoveE3);
+					timerMoveE3=window.setInterval("if(!over)te3.move('left')",500);
+					}break;
+				case"down":
+					var enemy3X=this.divs_e3[0].x;//Enemy3实时坐标
+					var enemy3Y=this.divs_e3[0].y;
+					if(this.field.checkborder(enemy3X,enemy3Y,"down")=='Y'&&this.field.checkEntity(enemy3X,enemy3Y+tankSpeed,"Steel")=='Y'&&this.field.checkEntity(enemy3X,enemy3Y+tankSpeed,"Water")=='Y'&&this.field.checkEntity(enemy3X,enemy3Y+tankSpeed,"WallMove")=='Y'){
+						directionTankE3="down";
+						this.divs_e3[0].style.backgroundImage="url(img/enemy3D.gif)";
+						this.divs_e3[0].y+=tankSpeed;
+						this.show();
+					}else{
+						clearInterval(timerMoveE3);
+						timerMoveE3=window.setInterval("if(!over)te3.move('right')",500);
+					}break;
+				case"left":
+					var enemy3X=this.divs_e3[0].x;//Enemy3实时坐标
+					var enemy3Y=this.divs_e3[0].y;
+					if(this.field.checkborder(enemy3X,enemy3Y,"left")=='Y'&&this.field.checkEntity(enemy3X-tankSpeed,enemy3Y,"Steel")=='Y'&&this.field.checkEntity(enemy3X-tankSpeed,enemy3Y,"Water")=='Y'&&this.field.checkEntity(enemy3X-tankSpeed,enemy3Y,"WallMove")=='Y'){
+						directionTankE3="left";
+						this.divs_e3[0].style.backgroundImage="url(img/enemy3L.gif)";
+						this.divs_e3[0].x-=tankSpeed;
+						this.show();
+					}else{
+						clearInterval(timerMoveE3);
+						timerMoveE3=window.setInterval("if(!over)te3.move('down')",500);
+					}break;
+				case"right":
+					var enemy3X=this.divs_e3[0].x;//Enemy3实时坐标
+					var enemy3Y=this.divs_e3[0].y;
+					if(this.field.checkborder(enemy3X,enemy3Y,"right")=='Y'&&this.field.checkEntity(enemy3X+tankSpeed,enemy3Y,"Steel")=='Y'&&this.field.checkEntity(enemy3X+tankSpeed,enemy3Y,"Water")=='Y'&&this.field.checkEntity(enemy3X+tankSpeed,enemy3Y,"WallMove")=='Y'){
+						directionTankE3="right";
+						this.divs_e3[0].style.backgroundImage="url(img/enemy3R.gif)";
+						this.divs_e3[0].x+=tankSpeed;
+						this.show();
+					}else{
+						clearInterval(timerMoveE3);
+						timerMoveE3=window.setInterval("if(!over)te3.move('up')",500);
+					}	
+			}
+		}
+		this.checkhitE3=function(direc){
+			this.hitP1=function(){
+				document.getElementById("p1Tank").removeChild(document.getElementById("p1Tank").lastChild);
+				t.reset(160,380);
+				t.show();
+				p1life--;
+				if(p1life>0){document.getElementById("countLife").innerHTML=p1life;}
+				else {document.getElementById("countLife").innerHTML="Over";over=true;}
+			}
+			this.hitStar=function(){
+				over=true;
+				this.field.divstar[0].style.backgroundImage="url(img/blast8.gif)";
+			}
+			switch(direc){
+				case"up":
+					if(this.field.divstar[0].x==this.divsMissleUpE3[0].x&&this.field.divstar[0].y==this.divsMissleUpE3[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleUpE3[0].x&&this.hit.divs[0].y==this.divsMissleUpE3[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+				case"down":
+					if(this.field.divstar[0].x==this.divsMissleDownE3[0].x&&this.field.divstar[0].y==this.divsMissleDownE3[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleDownE3[0].x&&this.hit.divs[0].y==this.divsMissleDownE3[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+				case"left":
+					if(this.field.divstar[0].x==this.divsMissleLeftE3[0].x&&this.field.divstar[0].y==this.divsMissleLeftE3[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleLeftE3[0].x&&this.hit.divs[0].y==this.divsMissleLeftE3[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+				case"right":
+					if(this.field.divstar[0].x==this.divsMissleRightE3[0].x&&this.field.divstar[0].y==this.divsMissleRightE3[0].y)
+						this.hitStar();
+					if(this.hit.divs[0].x==this.divsMissleRightE3[0].x&&this.hit.divs[0].y==this.divsMissleRightE3[0].y){
+						this.hitP1();
+						return 'Y';
+					}else{
+						return 'N';
+					}
+			}
+		}
+		this.firemove=function(startx,starty){
+			this.fireshow=function(direc){
+				switch(direc){
+					case"up":
+						this.divsMissleUpE3[0].style.left=this.divsMissleUpE3[0].x+'px';
+						this.divsMissleUpE3[0].style.top=this.divsMissleUpE3[0].y+'px';
+						break;
+					case"down":
+						this.divsMissleDownE3[0].style.left=this.divsMissleDownE3[0].x+'px';
+						this.divsMissleDownE3[0].style.top=this.divsMissleDownE3[0].y+'px';
+						break;
+					case"left":
+						this.divsMissleLeftE3[0].style.left=this.divsMissleLeftE3[0].x+'px';
+						this.divsMissleLeftE3[0].style.top=this.divsMissleLeftE3[0].y+'px';
+						break;
+					case"right":
+						this.divsMissleRightE3[0].style.left=this.divsMissleRightE3[0].x+'px';
+						this.divsMissleRightE3[0].style.top=this.divsMissleRightE3[0].y+'px';
+						break;
+				}
+			}
+			this.fireStop=function(direc){
+				switch(direc){
+					case"up":
+						clearInterval(timerE3);
+						document.getElementById("e3MissleUp").removeChild(document.getElementById("e3MissleUp").lastChild);
+						timerStatusE3="off";
+						break;
+					case"down":
+						clearInterval(timerE3);
+						document.getElementById("e3MissleDown").removeChild(document.getElementById("e3MissleDown").lastChild);
+						timerStatusE3="off";
+						break;
+					case"left":
+						clearInterval(timerE3);
+						document.getElementById("e3MissleLeft").removeChild(document.getElementById("e3MissleLeft").lastChild);
+						timerStatusE3="off";
+						break;
+					case"right":
+						clearInterval(timerE3);
+						document.getElementById("e3MissleRight").removeChild(document.getElementById("e3MissleRight").lastChild);
+						timerStatusE3="off";
+						break;
+				}
+			}
+			this.fireLocate=function(direc){
+				switch(direc){
+					case"up":
+						var divfire=createFire("e3MissleUp");
+						this.divsMissleUpE3=[divfire];
+						this.divsMissleUpE3[0].x=this.divs_e3[0].x;
+						this.divsMissleUpE3[0].y=this.divs_e3[0].y;
+						break;
+					case"down":
+						var divfire=createFire("e3MissleDown");
+						this.divsMissleDownE3=[divfire];
+						this.divsMissleDownE3[0].x=this.divs_e3[0].x;
+						this.divsMissleDownE3[0].y=this.divs_e3[0].y;
+						break;
+					case"left":
+						var divfire=createFire("e3MissleLeft");
+						this.divsMissleLeftE3=[divfire];
+						this.divsMissleLeftE3[0].x=this.divs_e3[0].x;
+						this.divsMissleLeftE3[0].y=this.divs_e3[0].y;
+						break;
+					case"right":
+						var divfire=createFire("e3MissleRight");
+						this.divsMissleRightE3=[divfire];
+						this.divsMissleRightE3[0].x=this.divs_e3[0].x;
+						this.divsMissleRightE3[0].y=this.divs_e3[0].y;
+						break;
+				}
+			}
+			switch(directionTankE3){
+				case "up":
+					this.fireup=function(){
+						if(document.getElementById("e3MissleUp").children.length<=0){
+							this.fireLocate("up");
+						}
+						if(this.field.checkborder(this.divsMissleUpE3[0].x,this.divsMissleUpE3[0].y,"up")=='Y'&&this.field.checkEntity(this.divsMissleUpE3[0].x,this.divsMissleUpE3[0].y,"Steel")=='Y'){
+							this.divsMissleUpE3[0].y-=missleSpeed;
+							timerStatusE3="open";
+							if(this.field.checkEntity(this.divsMissleUpE3[0].x,this.divsMissleUpE3[0].y,"WallMissle")=='Y'){
+								this.fireStop("up");
+								this.field.removeWall(this.divsMissleUpE3[0].x,this.divsMissleUpE3[0].y);
+							}
+							if(this.checkhitE3("up")=='Y')
+								this.fireStop("up");
+							}
+						else
+							this.fireStop("up");
+					}
+					if(timerStatusE3=="off")
+						timerE3=window.setInterval("if(!over)te3.fireup();te3.fireshow('up');",100);
+					break;
+				case "down":
+					this.firedown=function(){
+						if(document.getElementById("e3MissleDown").children.length<=0){
+							this.fireLocate("down");
+						}	
+						if(this.field.checkborder(this.divsMissleDownE3[0].x,this.divsMissleDownE3[0].y,"down")=='Y'&&this.field.checkEntity(this.divsMissleDownE3[0].x,this.divsMissleDownE3[0].y,"Steel")=='Y'){
+							MissleDownE3Y=this.divsMissleDownE3[0].y+=missleSpeed;
+							timerStatusE3="open";
+							if(this.field.checkEntity(this.divsMissleDownE3[0].x,this.divsMissleDownE3[0].y,"WallMissle")=='Y'){
+								this.fireStop("down");
+								this.field.removeWall(this.divsMissleDownE3[0].x,this.divsMissleDownE3[0].y);
+							}
+							if(this.checkhitE3("down")=='Y')
+								this.fireStop("down");
+							}
+						else
+							this.fireStop("down");
+					}
+					if(timerStatusE3=="off")
+						timerE3=window.setInterval("if(!over)te3.firedown();te3.fireshow('down');",100);
+					break;
+				case "left":
+					this.fireleft=function(){
+						if(document.getElementById("e3MissleLeft").children.length<=0){
+							this.fireLocate("left");
+						}	
+						if(this.field.checkborder(this.divsMissleLeftE3[0].x,this.divsMissleLeftE3[0].y,"left")=='Y'&&this.field.checkEntity(this.divsMissleLeftE3[0].x,this.divsMissleLeftE3[0].y,"Steel")=='Y'){
+							this.divsMissleLeftE3[0].x-=missleSpeed;
+							timerStatusE3="open";
+							if(this.field.checkEntity(this.divsMissleLeftE3[0].x,this.divsMissleLeftE3[0].y,"WallMissle")=='Y'){
+								this.fireStop("left");
+								this.field.removeWall(this.divsMissleLeftE3[0].x,this.divsMissleLeftE3[0].y);
+							}
+							if(this.checkhitE3("left")=='Y')
+								this.fireStop("left");
+							
+							}
+						else
+							this.fireStop("left");
+					}
+					if(timerStatusE3=="off")
+						timerE3=window.setInterval("if(!over)te3.fireleft();te3.fireshow('left');",100);
+					break;
+				case "right":
+						this.fireright=function(){
+						if(document.getElementById("e3MissleRight").children.length<=0){
+							this.fireLocate("right");
+						}	
+						if(this.field.checkborder(this.divsMissleRightE3[0].x,this.divsMissleRightE3[0].y,"right")=='Y'&&this.field.checkEntity(this.divsMissleRightE3[0].x,this.divsMissleRightE3[0].y,"Steel")=='Y'){
+							this.divsMissleRightE3[0].x+=missleSpeed;
+							timerStatusE3="open";
+							if(this.field.checkEntity(this.divsMissleRightE3[0].x,this.divsMissleRightE3[0].y,"WallMissle")=='Y'){
+								this.fireStop("right");
+								this.field.removeWall(this.divsMissleRightE3[0].x,this.divsMissleRightE3[0].y);
+							}
+							if(this.checkhitE3("right")=='Y')
+								this.fireStop("right");
+							}
+						else
+							this.fireStop("right");
+					}
+					if(timerStatusE3=="off")
+						timerE3=window.setInterval("if(!over)te3.fireright();te3.fireshow('right');",100);
+					break;
+				}
+			}
+		
+	}
+	function TankP1(){
+		this.reset=function(startx,starty){
+		var divP1Tank=createP1Tank("p1tankU");
+		this.divs=[divP1Tank];
+		this.divs[0].x=startx;
+		this.divs[0].y=starty;
+	}
+		this.show=function(){
+			this.divs[0].style.left=this.divs[0].x+'px';
+			this.divs[0].style.top=this.divs[0].y+'px';
+		}
+		this.checkhit=function(direc){//检测是否打掉了敌军坦克，E1，E2，E3，打掉就重新置位
+			this.hitE1=function(){
+				document.getElementById("TankEnemy1").removeChild(document.getElementById("TankEnemy1").lastChild);
+				clearInterval(timerFireE1);
+				te.reset(0,0);
+				te.show();
+				timerFireE1= window.setInterval("te.firemove();",1000);
+				document.getElementById("countE1").innerHTML=++countE1;
+			}
+			this.hitE2=function(){
+				document.getElementById("TankEnemy2").removeChild(document.getElementById("TankEnemy2").lastChild);
+				clearInterval(timerFireE2);
+				te2.reset(200,0);
+				te2.show();
+				timerFireE2= window.setInterval("te2.firemove();",1000);
+				document.getElementById("countE2").innerHTML=++countE2;
+			}
+			this.hitE3=function(){
+				document.getElementById("TankEnemy3").removeChild(document.getElementById("TankEnemy3").lastChild);
+				clearInterval(timerFireE3);
+				te3.reset(380,0);
+				te3.show();
+				timerFireE3= window.setInterval("te3.firemove();",1000);
+				document.getElementById("countE3").innerHTML=++countE3;
+			}
+			switch(direc){
+				case"up":
+					if(this.hit.divs_e1[0].x==this.divsMissleUp[0].x&&this.hit.divs_e1[0].y==this.divsMissleUp[0].y){
+						this.hitE1();
+						return 'Y';
+					}
+					if(this.hit2.divs_e2[0].x==this.divsMissleUp[0].x&&this.hit2.divs_e2[0].y==this.divsMissleUp[0].y){
+						this.hitE2();
+						return 'Y';
+					}
+					if(this.hit3.divs_e3[0].x==this.divsMissleUp[0].x&&this.hit3.divs_e3[0].y==this.divsMissleUp[0].y){
+						this.hitE3();
+						return 'Y';
+					}
+					return 'N';
+				case"down":
+					if(this.hit.divs_e1[0].x==this.divsMissleDown[0].x&&this.hit.divs_e1[0].y==this.divsMissleDown[0].y){
+						this.hitE1();
+						return 'Y';
+					}
+					if(this.hit2.divs_e2[0].x==this.divsMissleDown[0].x&&this.hit2.divs_e2[0].y==this.divsMissleDown[0].y){
+						this.hitE2();
+						return 'Y';
+					}
+					if(this.hit3.divs_e3[0].x==this.divsMissleDown[0].x&&this.hit3.divs_e3[0].y==this.divsMissleDown[0].y){
+						this.hitE3();
+						return 'Y';
+					}
+					return 'N';
+				case"left":
+					if(this.hit.divs_e1[0].x==this.divsMissleLeft[0].x&&this.hit.divs_e1[0].y==this.divsMissleLeft[0].y){
+						this.hitE1();
+						return 'Y';
+					}
+					if(this.hit2.divs_e2[0].x==this.divsMissleLeft[0].x&&this.hit2.divs_e2[0].y==this.divsMissleLeft[0].y){
+						this.hitE2();
+						return 'Y';
+					}
+					if(this.hit3.divs_e3[0].x==this.divsMissleLeft[0].x&&this.hit3.divs_e3[0].y==this.divsMissleLeft[0].y){
+						this.hitE3();
+						return 'Y';
+					}
+					return 'N';
+				case"right":
+					if(this.hit.divs_e1[0].x==this.divsMissleRight[0].x&&this.hit.divs_e1[0].y==this.divsMissleRight[0].y){
+						this.hitE1();
+						return 'Y';
+					}
+					if(this.hit2.divs_e2[0].x==this.divsMissleRight[0].x&&this.hit2.divs_e2[0].y==this.divsMissleRight[0].y){
+						this.hitE2();
+						return 'Y';
+					}
+					if(this.hit3.divs_e3[0].x==this.divsMissleRight[0].x&&this.hit3.divs_e3[0].y==this.divsMissleRight[0].y){
+						this.hitE3();
+						return 'Y';
+					}
+					return 'N';
+			}
+		}
+		this.move=function(direc){
+			switch(direc){
+				case"up":
+					if(this.field.checkborder(this.divs[0].x,this.divs[0].y,"up")=='Y'&&this.field.checkEntity(this.divs[0].x,this.divs[0].y-tankSpeed,"Steel")=='Y'&&this.field.checkEntity(this.divs[0].x,this.divs[0].y-tankSpeed,"Water")=='Y'&&this.field.checkEntity(this.divs[0].x,this.divs[0].y-tankSpeed,"WallMove")=='Y'){
+						direction="up";
+						this.divs[0].style.backgroundImage="url(img/p1tankU.gif)";
+						this.divs[0].y-=tankSpeed;
+						this.show();
+						}else{
+
+						}break;
+				case"down":
+					if(this.field.checkborder(this.divs[0].x,this.divs[0].y,"down")=='Y'&&this.field.checkEntity(this.divs[0].x,this.divs[0].y+tankSpeed,"Steel")=='Y'&&this.field.checkEntity(this.divs[0].x,this.divs[0].y+tankSpeed,"Water")=='Y'&&this.field.checkEntity(this.divs[0].x,this.divs[0].y+tankSpeed,"WallMove")=='Y'){
+						direction="down";
+						this.divs[0].style.backgroundImage="url(img/p1tankD.gif)";
+						this.divs[0].y+=tankSpeed;
+						this.show();
+						}else{
+
+						}break;
+				case"left":
+					if(this.field.checkborder(this.divs[0].x,this.divs[0].y,"left")=='Y'&&this.field.checkEntity(this.divs[0].x-tankSpeed,this.divs[0].y,"Steel")=='Y'&&this.field.checkEntity(this.divs[0].x-tankSpeed,this.divs[0].y,"Water")=='Y'&&this.field.checkEntity(this.divs[0].x-tankSpeed,this.divs[0].y,"WallMove")=='Y'){
+						direction="left";
+						this.divs[0].style.backgroundImage="url(img/p1tankL.gif)";
+						this.divs[0].x-=tankSpeed;
+						this.show();
+						}else{
+
+						}break;
+				case"right":
+					if(this.field.checkborder(this.divs[0].x,this.divs[0].y,"right")=='Y'&&this.field.checkEntity(this.divs[0].x+tankSpeed,this.divs[0].y,"Steel")=='Y'&&this.field.checkEntity(this.divs[0].x+tankSpeed,this.divs[0].y,"Water")=='Y'&&this.field.checkEntity(this.divs[0].x+tankSpeed,this.divs[0].y,"WallMove")=='Y'){
+						direction="right";
+						this.divs[0].style.backgroundImage="url(img/p1tankR.gif)";
+						this.divs[0].x+=tankSpeed;
+						this.show();
+						}else{
+
+						}break;
+			}
+		}
+	
+		
+		this.firemove=function(startx,starty){
+			this.fireshow=function(direc){
+				switch(direc){
+					case"up":
+						this.divsMissleUp[0].style.left=this.divsMissleUp[0].x+'px';
+						this.divsMissleUp[0].style.top=this.divsMissleUp[0].y+'px';
+						break;
+					case"down":
+						this.divsMissleDown[0].style.left=this.divsMissleDown[0].x+'px';
+						this.divsMissleDown[0].style.top=this.divsMissleDown[0].y+'px';
+						break;
+					case"left":
+						this.divsMissleLeft[0].style.left=this.divsMissleLeft[0].x+'px';
+						this.divsMissleLeft[0].style.top=this.divsMissleLeft[0].y+'px';
+						break;
+					case"right":
+						this.divsMissleRight[0].style.left=this.divsMissleRight[0].x+'px';
+						this.divsMissleRight[0].style.top=this.divsMissleRight[0].y+'px';
+						break;
+				}
+			}
+			this.fireStop=function(direc){
+				switch(direc){
+					case"up":
+						clearInterval(timer);
+						document.getElementById("p1MissleUp").removeChild(document.getElementById("p1MissleUp").lastChild);
+						timerStatus="off";
+						break;
+					case"down":
+						clearInterval(timer);
+						document.getElementById("p1MissleDown").removeChild(document.getElementById("p1MissleDown").lastChild);
+						timerStatus="off";
+						break;
+					case"left":
+						clearInterval(timer);
+						document.getElementById("p1MissleLeft").removeChild(document.getElementById("p1MissleLeft").lastChild);
+						timerStatus="off";
+						break;
+					case"right":
+						clearInterval(timer);
+						document.getElementById("p1MissleRight").removeChild(document.getElementById("p1MissleRight").lastChild);
+						timerStatus="off";
+						break;
+				}
+			}
+			this.fireLocate=function(direc){
+				switch(direc){
+					case"up":
+						var divfire=createFire("p1MissleUp");
+						this.divsMissleUp=[divfire];
+						this.divsMissleUp[0].x=this.divs[0].x;
+						this.divsMissleUp[0].y=this.divs[0].y;
+						break;
+					case"down":
+						var divfire=createFire("p1MissleDown");
+						this.divsMissleDown=[divfire];
+						this.divsMissleDown[0].x=this.divs[0].x;
+						this.divsMissleDown[0].y=this.divs[0].y;
+						break;
+					case"left":
+						var divfire=createFire("p1MissleLeft");
+						this.divsMissleLeft=[divfire];
+						this.divsMissleLeft[0].x=this.divs[0].x;
+						this.divsMissleLeft[0].y=this.divs[0].y;
+						break;
+					case"right":
+						var divfire=createFire("p1MissleRight");
+						this.divsMissleRight=[divfire];
+						this.divsMissleRight[0].x=this.divs[0].x;
+						this.divsMissleRight[0].y=this.divs[0].y;
+						break;
+				}
+			}
+			switch(direction){
+				case "up":
+					this.fireup=function(){
+						if(document.getElementById("p1MissleUp").children.length<=0){
+							this.fireLocate("up");
+						}
+						if(this.field.checkborder(this.divsMissleUp[0].x,this.divsMissleUp[0].y,"up")=='Y'&&this.field.checkEntity(this.divsMissleUp[0].x,this.divsMissleUp[0].y,"Steel")=='Y'){
+							this.divsMissleUp[0].y-=missleSpeed;
+							timerStatus="open";
+							if(this.field.checkEntity(this.divsMissleUp[0].x,this.divsMissleUp[0].y,"WallMissle")=='Y'){
+								this.fireStop("up");
+								this.field.removeWall(this.divsMissleUp[0].x,this.divsMissleUp[0].y);
+							}
+							if(this.checkhit("up")=='Y')
+								this.fireStop("up");
+							}
+						else
+							this.fireStop("up");
+					}
+					if(timerStatus=="off")
+						timer=window.setInterval("if(!over)t.fireup();t.fireshow('up');",100);
+					break;
+				case "down":
+					this.firedown=function(){
+						if(document.getElementById("p1MissleDown").children.length<=0){
+							this.fireLocate("down");
+						}	
+						if(this.field.checkborder(this.divsMissleDown[0].x,this.divsMissleDown[0].y,"down")=='Y'&&this.field.checkEntity(this.divsMissleDown[0].x,this.divsMissleDown[0].y,"Steel")=='Y'){
+							MissleDownY=this.divsMissleDown[0].y+=missleSpeed;
+							timerStatus="open";
+							if(this.field.checkEntity(this.divsMissleDown[0].x,this.divsMissleDown[0].y,"WallMissle")=='Y'){
+								this.fireStop("down");
+								this.field.removeWall(this.divsMissleDown[0].x,this.divsMissleDown[0].y);
+							}
+							if(this.checkhit("down")=='Y')
+								this.fireStop("down");
+							}
+						else
+							this.fireStop("down");
+					}
+					if(timerStatus=="off")
+						timer=window.setInterval("if(!over)t.firedown();t.fireshow('down');",100);
+					break;
+				case "left":
+					this.fireleft=function(){
+						if(document.getElementById("p1MissleLeft").children.length<=0){
+							this.fireLocate("left");
+						}	
+						if(this.field.checkborder(this.divsMissleLeft[0].x,this.divsMissleLeft[0].y,"left")=='Y'&&this.field.checkEntity(this.divsMissleLeft[0].x,this.divsMissleLeft[0].y,"Steel")=='Y'){
+							this.divsMissleLeft[0].x-=missleSpeed;
+							timerStatus="open";
+							if(this.field.checkEntity(this.divsMissleLeft[0].x,this.divsMissleLeft[0].y,"WallMissle")=='Y'){
+								this.fireStop("left");
+								this.field.removeWall(this.divsMissleLeft[0].x,this.divsMissleLeft[0].y);
+							}
+							if(this.checkhit("left")=='Y')
+								this.fireStop("left");
+							
+							}
+						else
+							this.fireStop("left");
+					}
+					if(timerStatus=="off")
+						timer=window.setInterval("if(!over)t.fireleft();t.fireshow('left');",100);
+					break;
+				case "right":
+						this.fireright=function(){
+						if(document.getElementById("p1MissleRight").children.length<=0){
+							this.fireLocate("right");
+						}	
+						if(this.field.checkborder(this.divsMissleRight[0].x,this.divsMissleRight[0].y,"right")=='Y'&&this.field.checkEntity(this.divsMissleRight[0].x,this.divsMissleRight[0].y,"Steel")=='Y'){
+							this.divsMissleRight[0].x+=missleSpeed;
+							timerStatus="open";
+							if(this.field.checkEntity(this.divsMissleRight[0].x,this.divsMissleRight[0].y,"WallMissle")=='Y'){
+								this.fireStop("right");
+								this.field.removeWall(this.divsMissleRight[0].x,this.divsMissleRight[0].y);
+							}
+							if(this.checkhit("right")=='Y')
+								this.fireStop("right");
+							}
+						else
+							this.fireStop("right");
+					}
+					if(timerStatus=="off")
+						timer=window.setInterval("if(!over)t.fireright();t.fireshow('right');",100);
+					break;
+				}
+			}
+	}
+
+	var f=new Field();
+	f.show();
+	// f.createStar(200,380);
+	// f.showStar();
+	f.showEntity("star",200,380);
+	//下面的是造地图的部分
+	for(var a=20;a<380;a+=20){
+		if(a!=200)
+			f.showEntity("steel",a,40);
+	}
+	f.showEntity("steel",200,320);
+
+	for(var a=20;a<380;a+=20){
+		if(a!=200)
+			f.showEntity("grass",a,300);
+	}
+	
+
+	for(var a=20;a<380;a+=20){
+		if(a!=200&&a!=100&&a!=300){
+			f.showEntity("water",a,280);
+			f.showEntity("water",a,320);
+		}
+			
+	}
+	//=====Star======
+	f.showEntity("wall",180,380);
+	f.showEntity("wall",220,380);
+
+	for(var a=180;a<=220;a+=20){
+		f.showEntity("wall",a,360);
+
+	}
+	
+
+	//=====Star======
+	//=====H======
+	for(var a=80;a<260;a+=20){
+		f.showEntity("wall",20,a);
+	}
+	f.showEntity("wall",40,160);
+	f.showEntity("wall",60,160);
+	for(var a=80;a<260;a+=20){
+		f.showEntity("wall",80,a);
+	}
+	//=====H======
+
+	//=====A======
+	f.showEntity("wall",140,140);
+	f.showEntity("wall",160,120);
+	f.showEntity("wall",180,100);
+	f.showEntity("wall",200,80);
+	f.showEntity("wall",220,100);
+	f.showEntity("wall",240,120);
+	f.showEntity("wall",260,140);
+	for(var a=160;a<260;a+=20){
+		f.showEntity("wall",140,a);
+	}
+	f.showEntity("wall",160,160);
+	f.showEntity("wall",180,160);
+	f.showEntity("wall",200,160);
+	f.showEntity("wall",220,160);
+	f.showEntity("wall",240,160);
+
+	for(var a=160;a<260;a+=20){
+		f.showEntity("wall",260,a);
+	}
+	//=====A======
+	//=====O======
+	for(var a=80;a<260;a+=20){
+		f.showEntity("wall",320,a);
+	}
+	f.showEntity("wall",340,80);
+	f.showEntity("wall",360,80);
+	f.showEntity("wall",340,240);
+	f.showEntity("wall",360,240);
+	for(var a=80;a<260;a+=20){
+		f.showEntity("wall",380,a);
+	}
+	//=====O======
+	//初始化坦克位置
+	var t=new TankP1();
+	t.field=f;
+	t.reset(160,380);
+	t.show();
+	var te=new TankEnemy1();
+	te.field=f;
+	te.reset(0,0);
+	te.show();
+
+	var te2=new TankEnemy2();
+	te2.field=f;
+	te2.reset(200,0);
+	te2.show();
+
+	var te3=new TankEnemy3();
+	te3.field=f;
+	te3.reset(380,0);
+	te3.show();
+	
+	t.hit=te;
+	te.hit=t;
+	//初始化坦克运动
+	timerMoveE1= window.setInterval("if(!over)te.move('down')",500);
+	timerFireE1= window.setInterval("if(!over)te.firemove();",1000);
+
+	t.hit2=te2;
+	te2.hit=t;
+	timerMoveE2= window.setInterval("if(!over)te2.move('down')",500);
+	timerFireE2= window.setInterval("if(!over)te2.firemove();",1000);
+
+	t.hit3=te3;
+	te3.hit=t;
+	timerMoveE3= window.setInterval("if(!over)te3.move('down')",500);
+	timerFireE3= window.setInterval("if(!over)te3.firemove();",1000);
+
+	//键盘检测
+	window.onkeydown=function(e){
+		if(over)return;
+		var e=window.event||e;
+		switch(e.keyCode){
+		case 74: //j
+			if(!over)t.firemove();
+            break;
+        case 87: //w
+        	if(!over)t.move("up");
+            break;
+        case 65: //a
+        	if(!over)t.move("left");
+            break;
+        case 83: //s
+        	if(!over)t.move("down");
+            break;
+        case 68: //d
+        	if(!over)t.move("right");
+            break;
+        case 27: //esc
+            
+            
+            break;}
+
+
+	}
+</script>
